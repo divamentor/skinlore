@@ -1,43 +1,116 @@
-
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Skin Lore — Niasinamid · dr.bengisuege</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Nunito:wght@700;800;900&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet"/>
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Nunito:wght@700;800;900&family=Space+Mono:wght@400;700&display=swap');
-
-.scene {
-  width:100%; min-height:680px;
+*{box-sizing:border-box;margin:0;padding:0;}
+html,body{width:100%;height:100%;overflow:hidden;}
+body{
   background:#07040f;
-  display:flex; flex-direction:column;
-  align-items:center; justify-content:center;
-  padding:36px 20px; position:relative; overflow:hidden;
+  display:flex;flex-direction:column;
+  align-items:center;justify-content:center;
+  font-family:'Space Mono',monospace;
 }
-.orb {
-  position:absolute; border-radius:50%; pointer-events:none;
+
+/* ── REVEAL ANIMATION ── */
+@keyframes cardReveal{
+  0%{opacity:0;transform:translateY(60px) scale(0.88) rotateX(12deg);filter:brightness(0);}
+  60%{filter:brightness(1.3);}
+  100%{opacity:1;transform:translateY(0) scale(1) rotateX(0deg);filter:brightness(1);}
 }
-.hint {
-  font-family:'Space Mono',monospace; font-size:10px;
-  color:rgba(167,139,250,0.55); letter-spacing:.1em;
-  margin-bottom:20px; text-align:center;
+@keyframes glowPulse{
+  0%,100%{box-shadow:0 0 40px rgba(139,92,246,0.0);}
+  50%{box-shadow:0 0 80px rgba(139,92,246,0.5),0 0 120px rgba(139,92,246,0.2);}
 }
-.card-wrap {
-  width:320px; height:490px;
-  position:relative; cursor:pointer;
-  filter:drop-shadow(0 24px 48px rgba(0,0,0,0.8));
+@keyframes rpulse{0%,100%{opacity:.3;transform:scale(1);}50%{opacity:.7;transform:scale(1.06);}}
+@keyframes floatup{0%,100%{transform:translateY(0);}50%{transform:translateY(-6px);}}
+@keyframes pdrift{0%{transform:translateY(0) translateX(0);opacity:.6;}100%{transform:translateY(-90px) translateX(var(--dx));opacity:0;}}
+@keyframes rippleOut{0%{transform:translate(-50%,-50%) scale(0);opacity:0.6;}100%{transform:translate(-50%,-50%) scale(4);opacity:0;}}
+@keyframes flipWhoosh{0%{transform:scaleX(1);}45%{transform:scaleX(0);}55%{transform:scaleX(0);}100%{transform:scaleX(1);}}
+
+.orb{position:fixed;border-radius:50%;pointer-events:none;}
+
+/* ── CARD WRAP ── */
+.card-wrap{
+  width:320px;height:500px;
+  position:relative;
+  cursor:pointer;
+  animation:cardReveal 1.1s cubic-bezier(0.34,1.56,0.64,1) both;
+  filter:drop-shadow(0 28px 50px rgba(0,0,0,0.85));
 }
-.card-face {
-  position:absolute; inset:0; border-radius:22px;
-  overflow:hidden; transition:opacity .04s;
+
+.card-inner{
+  width:100%;height:100%;
+  position:relative;
+  transition:transform 0.12s linear;
 }
-.face-front {
+
+.card-face{
+  position:absolute;inset:0;
+  border-radius:22px;overflow:hidden;
+}
+
+/* ── HOLO OVERLAY ── */
+.holo{
+  position:absolute;inset:0;border-radius:22px;
+  pointer-events:none;z-index:10;
+  opacity:0;
+  transition:opacity 0.2s;
+  mix-blend-mode:color-dodge;
+  background:linear-gradient(
+    105deg,
+    transparent 20%,
+    rgba(139,92,246,0.18) 30%,
+    rgba(96,165,250,0.14) 40%,
+    rgba(52,211,153,0.12) 50%,
+    rgba(251,191,36,0.12) 60%,
+    rgba(236,72,153,0.14) 70%,
+    transparent 80%
+  );
+  background-size:300% 300%;
+  transition:opacity 0.2s, background-position 0.05s;
+}
+.card-wrap:hover .holo{opacity:1;}
+
+/* Shine reflection */
+.shine{
+  position:absolute;inset:0;border-radius:22px;
+  pointer-events:none;z-index:11;
+  opacity:0;
+  background:radial-gradient(
+    circle at var(--mx,50%) var(--my,50%),
+    rgba(255,255,255,0.12) 0%,
+    rgba(255,255,255,0.04) 30%,
+    transparent 65%
+  );
+  transition:opacity 0.2s;
+}
+.card-wrap:hover .shine{opacity:1;}
+
+/* Ripple */
+.ripple{
+  position:absolute;
+  width:60px;height:60px;
+  border-radius:50%;
+  border:2px solid rgba(167,139,250,0.6);
+  pointer-events:none;z-index:12;
+  animation:rippleOut 0.65s ease-out forwards;
+}
+
+.face-front{
   background:linear-gradient(145deg,#1a1040,#0d0820,#1a0f35);
   border:1.5px solid rgba(167,139,250,0.4);
 }
-.face-back {
+.face-back{
   background:linear-gradient(145deg,#0a1a10,#061208,#0c1e12);
   border:1.5px solid rgba(52,211,153,0.38);
-  display:flex; flex-direction:column;
+  display:none;flex-direction:column;
 }
 
-/* corners */
-.cd { position:absolute; width:12px; height:12px; pointer-events:none; }
+.cd{position:absolute;width:12px;height:12px;pointer-events:none;z-index:5;}
 .ftl{top:10px;left:10px;border-top:1.5px solid rgba(167,139,250,.55);border-left:1.5px solid rgba(167,139,250,.55);}
 .ftr{top:10px;right:10px;border-top:1.5px solid rgba(167,139,250,.55);border-right:1.5px solid rgba(167,139,250,.55);}
 .fbl{bottom:10px;left:10px;border-bottom:1.5px solid rgba(167,139,250,.55);border-left:1.5px solid rgba(167,139,250,.55);}
@@ -47,387 +120,357 @@
 .bbl{bottom:10px;left:10px;border-bottom:1.5px solid rgba(52,211,153,.5);border-left:1.5px solid rgba(52,211,153,.5);}
 .bbr{bottom:10px;right:10px;border-bottom:1.5px solid rgba(52,211,153,.5);border-right:1.5px solid rgba(52,211,153,.5);}
 
-/* FRONT */
-.f-badge {
-  display:inline-flex; align-items:center; gap:6px;
-  background:rgba(139,92,246,.2); border:1px solid rgba(167,139,250,.38);
-  border-radius:20px; padding:4px 12px;
-  font-family:'Space Mono',monospace; font-size:9px; color:#c4b5fd;
-  letter-spacing:.1em; text-transform:uppercase;
-}
-.f-name {
-  font-family:'Bebas Neue',sans-serif; font-size:44px; color:#fff;
-  line-height:.95; text-shadow:0 0 28px rgba(167,139,250,.7); letter-spacing:.02em;
-}
-.f-sub {
-  font-family:'Space Mono',monospace; font-size:9px;
-  color:rgba(196,181,253,.5); margin-top:4px; letter-spacing:.08em;
-}
-.art-box {
-  margin:0 20px; height:126px; border-radius:14px;
-  background:linear-gradient(135deg,#1e1060,#2d1b69,#180e48);
-  border:1px solid rgba(167,139,250,.25);
-  display:flex; align-items:center; justify-content:center;
-  position:relative; overflow:hidden;
-}
-.art-ring {
-  position:absolute; border-radius:50%;
-  border:1px solid rgba(167,139,250,.13);
-  animation:ringpulse 3s ease-in-out infinite;
-}
-@keyframes ringpulse{0%,100%{opacity:.35;transform:scale(1);}50%{opacity:.75;transform:scale(1.06);}}
-.art-em {
-  font-size:52px; position:relative; z-index:2;
-  animation:floatup 3s ease-in-out infinite;
-  filter:drop-shadow(0 0 18px rgba(167,139,250,.8));
-}
-@keyframes floatup{0%,100%{transform:translateY(0);}50%{transform:translateY(-7px);}}
+.f-badge{display:inline-flex;align-items:center;gap:6px;background:rgba(139,92,246,.2);border:1px solid rgba(167,139,250,.38);border-radius:20px;padding:4px 12px;font-size:9px;color:#c4b5fd;letter-spacing:.1em;text-transform:uppercase;}
+.f-name{font-family:'Bebas Neue',sans-serif;font-size:44px;color:#fff;line-height:.95;text-shadow:0 0 28px rgba(167,139,250,.7);letter-spacing:.02em;}
+.f-sub{font-size:9px;color:rgba(196,181,253,.5);margin-top:4px;letter-spacing:.08em;}
 
-.srow { display:flex; align-items:center; gap:8px; margin-bottom:8px; }
-.slbl {
-  font-family:'Space Mono',monospace; font-size:8px;
-  color:rgba(196,181,253,.48); letter-spacing:.08em;
-  text-transform:uppercase; width:70px; flex-shrink:0;
-}
-.sbg {
-  flex:1; height:7px; border-radius:10px;
-  background:rgba(255,255,255,.06); overflow:hidden;
-}
-.sfill {
-  height:100%; border-radius:10px;
-  transition:width 1.4s cubic-bezier(.4,0,.2,1);
-}
-.sval {
-  font-family:'Bebas Neue',sans-serif; font-size:14px;
-  width:24px; text-align:right; flex-shrink:0;
-}
-.divider {
-  margin:10px 20px; height:1px;
-  background:linear-gradient(90deg,transparent,rgba(167,139,250,.28),transparent);
-}
-.shitpost {
-  padding:0 20px 12px;
-  font-family:'Nunito',sans-serif; font-size:11.5px; font-weight:700;
-  color:rgba(221,214,254,.82); line-height:1.55; font-style:italic;
-}
-.f-foot {
-  padding:0 20px 18px;
-  display:flex; justify-content:space-between; align-items:center;
-}
-.rarity {
-  font-family:'Space Mono',monospace; font-size:9px;
-  color:#fbbf24; letter-spacing:.06em;
-  display:flex; align-items:center; gap:4px;
-}
-.chip {
-  font-family:'Space Mono',monospace; font-size:8px;
-  padding:3px 7px; border-radius:10px;
-  background:rgba(52,211,153,.14); border:1px solid rgba(52,211,153,.28);
-  color:#6ee7b7;
-}
+.art-box{margin:0 20px;height:118px;border-radius:14px;background:linear-gradient(135deg,#1e1060,#2d1b69,#180e48);border:1px solid rgba(167,139,250,.25);display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;}
+.art-ring{position:absolute;border-radius:50%;border:1px solid rgba(167,139,250,.13);animation:rpulse 3s ease-in-out infinite;}
+.art-em{font-size:50px;position:relative;z-index:2;animation:floatup 3s ease-in-out infinite;filter:drop-shadow(0 0 16px rgba(167,139,250,.8));}
 
-/* BACK */
-.b-head {
-  padding:18px 20px 12px;
-  border-bottom:1px solid rgba(52,211,153,.16);
-}
-.b-badge {
-  display:inline-flex; align-items:center; gap:6px;
-  background:rgba(52,211,153,.14); border:1px solid rgba(52,211,153,.32);
-  border-radius:20px; padding:4px 12px;
-  font-family:'Space Mono',monospace; font-size:9px; color:#6ee7b7;
-  letter-spacing:.1em; text-transform:uppercase; margin-bottom:8px;
-}
-.b-title {
-  font-family:'Bebas Neue',sans-serif; font-size:20px; color:#fff;
-  letter-spacing:.04em; text-shadow:0 0 18px rgba(52,211,153,.55);
-}
-.bsec { padding:12px 20px 0; }
-.bsec-title {
-  font-family:'Space Mono',monospace; font-size:8px;
-  color:rgba(110,231,183,.45); letter-spacing:.12em; text-transform:uppercase;
-  margin-bottom:10px; display:flex; align-items:center; gap:8px;
-}
-.bsec-title::after {
-  content:''; flex:1; height:1px;
-  background:linear-gradient(90deg,rgba(52,211,153,.18),transparent);
-}
-.prow { display:flex; align-items:flex-start; gap:9px; margin-bottom:9px; }
-.pdot { width:6px; height:6px; border-radius:50%; flex-shrink:0; margin-top:5px; }
-.ptxt {
-  font-family:'Nunito',sans-serif; font-size:11px; font-weight:700;
-  color:rgba(209,250,229,.82); line-height:1.5;
-}
-.psub {
-  font-family:'Space Mono',monospace; font-size:8px;
-  color:rgba(110,231,183,.45); letter-spacing:.05em;
-  display:block; margin-top:1px;
-}
-.crow {
-  display:flex; align-items:flex-start; gap:9px;
-  padding:8px 11px; border-radius:10px; margin-bottom:7px;
-  background:rgba(239,68,68,.08); border:1px solid rgba(239,68,68,.2);
-}
-.ctxt {
-  font-family:'Nunito',sans-serif; font-size:10.5px; font-weight:700;
-  color:rgba(252,165,165,.85); line-height:1.4;
-}
-.csub {
-  font-family:'Space Mono',monospace; font-size:8px;
-  color:rgba(252,165,165,.4); letter-spacing:.05em;
-  display:block; margin-top:1px;
-}
-.orow {
-  display:flex; align-items:center; gap:9px;
-  padding:8px 11px; border-radius:10px; margin-bottom:7px;
-  background:rgba(52,211,153,.08); border:1px solid rgba(52,211,153,.2);
-}
-.otxt {
-  font-family:'Nunito',sans-serif; font-size:10.5px; font-weight:700;
-  color:rgba(167,243,208,.85); line-height:1.4;
-}
-.b-foot {
-  margin-top:auto; padding:10px 20px 16px;
-  border-top:1px solid rgba(52,211,153,.14);
-  display:flex; justify-content:space-between; align-items:center;
-}
-.bid {
-  font-family:'Space Mono',monospace; font-size:8px;
-  color:rgba(110,231,183,.3); letter-spacing:.08em;
-}
-.bdr {
-  font-family:'Nunito',sans-serif; font-size:9px; font-weight:800;
-  color:rgba(110,231,183,.45);
-}
+.srow{display:flex;align-items:center;gap:8px;margin-bottom:8px;}
+.slbl{font-size:8px;color:rgba(196,181,253,.48);letter-spacing:.08em;text-transform:uppercase;width:80px;flex-shrink:0;}
+.sbg{flex:1;height:6px;border-radius:10px;background:rgba(255,255,255,.06);overflow:hidden;}
+.sfill{height:100%;border-radius:10px;transition:width 1.4s cubic-bezier(.4,0,.2,1);}
+.sval{font-family:'Bebas Neue',sans-serif;font-size:14px;width:24px;text-align:right;flex-shrink:0;}
 
-.flip-btn {
-  margin-top:20px;
-  font-family:'Space Mono',monospace; font-size:10px;
-  color:rgba(167,139,250,.65); letter-spacing:.1em;
-  background:rgba(139,92,246,.1); border:1px solid rgba(167,139,250,.22);
-  border-radius:20px; padding:9px 22px; cursor:pointer;
-  transition:all .2s;
-}
-.flip-btn:hover { background:rgba(139,92,246,.2); color:rgba(196,181,253,.95); }
+.divider{margin:9px 20px;height:1px;background:linear-gradient(90deg,transparent,rgba(167,139,250,.28),transparent);}
+.shitpost{padding:0 20px 8px;font-family:'Nunito',sans-serif;font-size:11px;font-weight:700;color:rgba(221,214,254,.82);line-height:1.5;font-style:italic;}
 
-.particle {
-  position:absolute; border-radius:50%; pointer-events:none;
-  animation:pdrift linear infinite;
+.signature{padding:0 20px 5px;display:flex;align-items:center;gap:8px;}
+.sig-line{flex:1;height:1px;background:linear-gradient(90deg,transparent,rgba(167,139,250,.25));}
+.sig-text{font-size:8px;color:rgba(196,181,253,.45);letter-spacing:.08em;white-space:nowrap;}
+
+.f-foot{padding:0 20px 14px;display:flex;justify-content:space-between;align-items:center;}
+.rarity{font-size:9px;color:#fbbf24;letter-spacing:.06em;display:flex;align-items:center;gap:4px;}
+.chip{font-size:8px;padding:3px 7px;border-radius:10px;background:rgba(52,211,153,.14);border:1px solid rgba(52,211,153,.28);color:#6ee7b7;}
+
+.b-head{padding:14px 20px 10px;border-bottom:1px solid rgba(52,211,153,.16);}
+.b-badge{display:inline-flex;align-items:center;gap:6px;background:rgba(52,211,153,.14);border:1px solid rgba(52,211,153,.32);border-radius:20px;padding:4px 12px;font-size:9px;color:#6ee7b7;letter-spacing:.1em;text-transform:uppercase;margin-bottom:6px;}
+.b-title{font-family:'Bebas Neue',sans-serif;font-size:19px;color:#fff;letter-spacing:.04em;text-shadow:0 0 16px rgba(52,211,153,.5);}
+
+.bsec{padding:10px 20px 0;}
+.bsec-title{font-size:8px;color:rgba(110,231,183,.45);letter-spacing:.12em;text-transform:uppercase;margin-bottom:8px;display:flex;align-items:center;gap:8px;}
+.bsec-title::after{content:'';flex:1;height:1px;background:linear-gradient(90deg,rgba(52,211,153,.18),transparent);}
+.prow{display:flex;align-items:flex-start;gap:9px;margin-bottom:8px;}
+.pdot{width:6px;height:6px;border-radius:50%;flex-shrink:0;margin-top:5px;}
+.ptxt{font-family:'Nunito',sans-serif;font-size:11px;font-weight:700;color:rgba(209,250,229,.82);line-height:1.5;}
+.psub{font-size:8px;color:rgba(110,231,183,.45);letter-spacing:.05em;display:block;margin-top:1px;}
+
+.crow{display:flex;align-items:flex-start;gap:9px;padding:7px 11px;border-radius:10px;margin-bottom:6px;background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.2);}
+.ctxt{font-family:'Nunito',sans-serif;font-size:10.5px;font-weight:700;color:rgba(252,165,165,.85);line-height:1.4;}
+.csub{font-size:8px;color:rgba(252,165,165,.4);letter-spacing:.05em;display:block;margin-top:1px;}
+.orow{display:flex;align-items:center;gap:9px;padding:7px 11px;border-radius:10px;margin-bottom:6px;background:rgba(52,211,153,.08);border:1px solid rgba(52,211,153,.2);}
+.otxt{font-family:'Nunito',sans-serif;font-size:10.5px;font-weight:700;color:rgba(167,243,208,.85);line-height:1.4;}
+
+.b-sig{margin-top:auto;padding:10px 20px 14px;border-top:1px solid rgba(52,211,153,.14);display:flex;justify-content:space-between;align-items:center;}
+.b-sig-l{font-size:8px;color:rgba(110,231,183,.3);letter-spacing:.08em;}
+.b-sig-r{font-family:'Nunito',sans-serif;font-size:9px;font-weight:900;color:rgba(110,231,183,.55);letter-spacing:.04em;}
+
+/* Flip hint */
+.hint{
+  margin-top:18px;
+  font-size:9px;letter-spacing:.1em;
+  color:rgba(167,139,250,.4);
+  text-align:center;
+  animation:hintBlink 2.5s ease-in-out infinite;
 }
-@keyframes pdrift {
-  0%{transform:translateY(0) translateX(0);opacity:.6;}
-  100%{transform:translateY(-90px) translateX(var(--dx));opacity:0;}
-}
+@keyframes hintBlink{0%,100%{opacity:.4;}50%{opacity:.8;}}
+
+.particle{position:fixed;border-radius:50%;pointer-events:none;animation:pdrift linear infinite;}
 </style>
+</head>
+<body>
 
-<div class="scene" id="scene">
-  <div class="orb" style="width:380px;height:380px;top:-90px;left:-70px;background:radial-gradient(circle,rgba(139,92,246,.16) 0%,transparent 70%);"></div>
-  <div class="orb" style="width:280px;height:280px;bottom:-50px;right:-50px;background:radial-gradient(circle,rgba(52,211,153,.1) 0%,transparent 70%);"></div>
+<div class="orb" style="width:360px;height:360px;top:-80px;left:-60px;background:radial-gradient(circle,rgba(139,92,246,.15) 0%,transparent 70%);"></div>
+<div class="orb" style="width:260px;height:260px;bottom:-50px;right:-50px;background:radial-gradient(circle,rgba(52,211,153,.1) 0%,transparent 70%);"></div>
 
-  <div class="hint" id="hint">kartı çevirmek için tıkla ↻</div>
+<div class="card-wrap" id="cardWrap">
 
-  <div class="card-wrap" id="cardWrap" onclick="doFlip()">
+  <div class="card-inner" id="cardInner">
 
-    <!-- FRONT -->
-    <div class="card-face face-front" id="front">
+    <!-- Holografik katmanlar -->
+    <div class="holo" id="holo"></div>
+    <div class="shine" id="shine"></div>
+
+    <!-- ── ÖN YÜZ ── -->
+    <div class="card-face face-front" id="faceFront">
       <div class="cd ftl"></div><div class="cd ftr"></div>
       <div class="cd fbl"></div><div class="cd fbr"></div>
 
-      <div style="padding:18px 20px 10px;">
+      <div style="padding:16px 20px 10px;">
         <div class="f-badge">
           <span style="width:6px;height:6px;border-radius:50%;background:#a78bfa;display:inline-block;"></span>
           Skin Lore · Aktif
         </div>
         <div class="f-name">Niasinamid</div>
-        <div class="f-sub">B3 · Nicotinamide · Niacin Amid</div>
+        <div class="f-sub">Niasinamid · B3 Vitamini · Nikotinamid</div>
       </div>
 
       <div class="art-box">
-        <div class="art-ring" style="width:176px;height:176px;top:50%;left:50%;margin:-88px 0 0 -88px;"></div>
-        <div class="art-ring" style="width:108px;height:108px;top:50%;left:50%;margin:-54px 0 0 -54px;animation-delay:1s;"></div>
+        <div class="art-ring" style="width:170px;height:170px;top:50%;left:50%;margin:-85px 0 0 -85px;"></div>
+        <div class="art-ring" style="width:105px;height:105px;top:50%;left:50%;margin:-52px 0 0 -52px;animation-delay:1s;"></div>
         <div class="art-em">⚗️</div>
       </div>
 
-      <div style="padding:13px 20px 0;">
-        <div class="srow">
-          <span class="slbl">Etkinlik</span>
-          <div class="sbg"><div class="sfill" id="b1" style="width:0%;background:linear-gradient(90deg,#7c3aed,#a78bfa);box-shadow:0 0 7px rgba(167,139,250,.55);"></div></div>
-          <span class="sval" style="color:#a78bfa;">99</span>
-        </div>
-        <div class="srow">
-          <span class="slbl">Güvenlik</span>
-          <div class="sbg"><div class="sfill" id="b2" style="width:0%;background:linear-gradient(90deg,#059669,#34d399);box-shadow:0 0 7px rgba(52,211,153,.55);"></div></div>
-          <span class="sval" style="color:#34d399;">100</span>
-        </div>
-        <div class="srow">
-          <span class="slbl">Tolerans</span>
-          <div class="sbg"><div class="sfill" id="b3" style="width:0%;background:linear-gradient(90deg,#0284c7,#38bdf8);box-shadow:0 0 7px rgba(56,189,248,.55);"></div></div>
-          <span class="sval" style="color:#38bdf8;">97</span>
-        </div>
-        <div class="srow">
-          <span class="slbl">Drama</span>
-          <div class="sbg"><div class="sfill" id="b4" style="width:0%;background:linear-gradient(90deg,#b45309,#fbbf24);box-shadow:0 0 7px rgba(251,191,36,.45);"></div></div>
-          <span class="sval" style="color:#fbbf24;">12</span>
-        </div>
+      <div style="padding:12px 20px 0;">
+        <div class="srow"><span class="slbl">Etkinlik</span><div class="sbg"><div class="sfill" id="b1" style="width:0%;background:linear-gradient(90deg,#7c3aed,#a78bfa);box-shadow:0 0 7px rgba(167,139,250,.55);"></div></div><span class="sval" style="color:#a78bfa;">99</span></div>
+        <div class="srow"><span class="slbl">Güvenlik</span><div class="sbg"><div class="sfill" id="b2" style="width:0%;background:linear-gradient(90deg,#059669,#34d399);box-shadow:0 0 7px rgba(52,211,153,.55);"></div></div><span class="sval" style="color:#34d399;">100</span></div>
+        <div class="srow"><span class="slbl">Tolerans</span><div class="sbg"><div class="sfill" id="b3" style="width:0%;background:linear-gradient(90deg,#0284c7,#38bdf8);box-shadow:0 0 7px rgba(56,189,248,.55);"></div></div><span class="sval" style="color:#38bdf8;">97</span></div>
+        <div class="srow"><span class="slbl">Drama</span><div class="sbg"><div class="sfill" id="b4" style="width:0%;background:linear-gradient(90deg,#b45309,#fbbf24);box-shadow:0 0 7px rgba(251,191,36,.45);"></div></div><span class="sval" style="color:#fbbf24;">12</span></div>
       </div>
 
       <div class="divider"></div>
+      <div class="shitpost">"Her şeyi yapar. Leke, gözenek, yağ, bariyer, kızarıklık. Fazla mesai yapıyor. Sendika kurmalı. Haksızlık."</div>
 
-      <div class="shitpost">
-        "Her şeyi yapar. Leke, gözenek, yağ, bariyer, kızarıklık. Fazla mesai yapıyor. Sendika kurmalı. Haksızlık."
+      <div class="signature">
+        <div class="sig-line"></div>
+        <div class="sig-text">dr.bengisuege</div>
+        <div style="width:6px;height:6px;border-radius:50%;background:rgba(167,139,250,.4);flex-shrink:0;"></div>
       </div>
 
       <div class="f-foot">
-        <div class="rarity">
-          <span style="letter-spacing:2px;">★★★★★</span>
-          <span>EFSANEVİ</span>
-        </div>
-        <div style="display:flex;gap:4px;">
-          <span class="chip">TÜM</span>
-          <span class="chip">CİLTLER</span>
-        </div>
+        <div class="rarity"><span style="letter-spacing:2px;">★★★★★</span><span>EFSANEVİ</span></div>
+        <div style="display:flex;gap:4px;"><span class="chip">TÜM</span><span class="chip">CİLTLER</span></div>
       </div>
     </div>
 
-    <!-- BACK -->
-    <div class="card-face face-back" id="back" style="display:none;">
+    <!-- ── ARKA YÜZ ── -->
+    <div class="card-face face-back" id="faceBack">
       <div class="cd btl"></div><div class="cd btr"></div>
       <div class="cd bbl"></div><div class="cd bbr"></div>
 
       <div class="b-head">
-        <div class="b-badge">
-          <span style="width:6px;height:6px;border-radius:50%;background:#34d399;display:inline-block;"></span>
-          Bileşen Dosyası
-        </div>
-        <div class="b-title">Niasinamid — Tam Profil</div>
+        <div class="b-badge"><span style="width:6px;height:6px;border-radius:50%;background:#34d399;display:inline-block;"></span>Bileşen Dosyası</div>
+        <div class="b-title">Niasinamid — Tam Bileşen Profili</div>
       </div>
 
       <div class="bsec">
-        <div class="bsec-title">Süper Güçler</div>
-        <div class="prow">
-          <div class="pdot" style="background:#a78bfa;box-shadow:0 0 5px rgba(167,139,250,.7);"></div>
-          <div><div class="ptxt">Gözenek küçültür</div>
-          <span class="psub">sebum üretimini regüle eder · yağlı cilt savior</span></div>
-        </div>
-        <div class="prow">
-          <div class="pdot" style="background:#34d399;box-shadow:0 0 5px rgba(52,211,153,.7);"></div>
-          <div><div class="ptxt">Leke açar + parlaklık verir</div>
-          <span class="psub">melanin transferini bloke eder · slow burn but sure</span></div>
-        </div>
-        <div class="prow">
-          <div class="pdot" style="background:#38bdf8;box-shadow:0 0 5px rgba(56,189,248,.7);"></div>
-          <div><div class="ptxt">Bariyer güçlendirir</div>
-          <span class="psub">ceramide sentezini artırır · TEWL azaltır</span></div>
-        </div>
-        <div class="prow">
-          <div class="pdot" style="background:#fbbf24;box-shadow:0 0 5px rgba(251,191,36,.7);"></div>
-          <div><div class="ptxt">Kızarıklık & inflamasyon</div>
-          <span class="psub">rozase + akne post-inflamasyon · hassas cilt dostu</span></div>
-        </div>
+        <div class="bsec-title">Bileşen Güçleri</div>
+        <div class="prow"><div class="pdot" style="background:#a78bfa;box-shadow:0 0 5px rgba(167,139,250,.7);"></div><div><div class="ptxt">Gözenek küçültür</div><span class="psub">sebum üretimini dengeler · yağlı cilt için ideal</span></div></div>
+        <div class="prow"><div class="pdot" style="background:#34d399;box-shadow:0 0 5px rgba(52,211,153,.7);"></div><div><div class="ptxt">Leke açar + parlaklık verir</div><span class="psub">melanin transferini engeller · etkisi zamanla görülür</span></div></div>
+        <div class="prow"><div class="pdot" style="background:#38bdf8;box-shadow:0 0 5px rgba(56,189,248,.7);"></div><div><div class="ptxt">Bariyer güçlendirir</div><span class="psub">seramid sentezini artırır · nem kaybını azaltır</span></div></div>
+        <div class="prow"><div class="pdot" style="background:#fbbf24;box-shadow:0 0 5px rgba(251,191,36,.7);"></div><div><div class="ptxt">Kızarıklık ve iltihabı yatıştırır</div><span class="psub">rozase + akne sonrası izler · hassas cilt dostu</span></div></div>
       </div>
 
-      <div class="bsec" style="padding-top:10px;">
-        <div class="bsec-title">Kombinasyon Rehberi</div>
-        <div class="crow">
-          <span style="font-size:13px;flex-shrink:0;">⚠️</span>
-          <div><div class="ctxt">Yüksek doz C Vitamini ile dikkat</div>
-          <span class="csub">%10+ niasinamid + %10+ C vitamini → sararma riski · düşük dozda problem yok</span></div>
-        </div>
-        <div class="orow">
-          <span style="font-size:13px;flex-shrink:0;">✓</span>
-          <div class="otxt">Retinol, BHA, AHA, Seramid ile tam uyumlu</div>
-        </div>
-        <div class="orow">
-          <span style="font-size:13px;flex-shrink:0;">✓</span>
-          <div class="otxt">Sabah + akşam kullanılabilir · günde 2x</div>
-        </div>
+      <div class="bsec" style="padding-top:8px;">
+        <div class="bsec-title">Uyum Rehberi</div>
+        <div class="crow"><span style="font-size:13px;flex-shrink:0;">⚠️</span><div><div class="ctxt">Yüksek doz C Vitamini ile dikkat</div><span class="csub">%10+ niasinamid + %10+ C vitamini → sararma riski · düşük dozda sorun yok</span></div></div>
+        <div class="orow"><span style="font-size:13px;flex-shrink:0;">✓</span><div class="otxt">Retinol, BHA, AHA, Seramid ile tam uyumlu</div></div>
+        <div class="orow"><span style="font-size:13px;flex-shrink:0;">✓</span><div class="otxt">Sabah ve akşam kullanılabilir · günde 2 kez · %2–10 arası</div></div>
       </div>
 
-      <div class="b-foot">
-        <div class="bid">#INCI-B3 · SKIN LORE v1.0</div>
-        <div class="bdr">Doktor Hasta™</div>
+      <div class="b-sig">
+        <div class="b-sig-l">#INCI-B3 · SKIN LORE v1</div>
+        <div class="b-sig-r">@dr.bengisuege</div>
       </div>
     </div>
 
-  </div>
+  </div><!-- /card-inner -->
+</div><!-- /card-wrap -->
 
-  <button class="flip-btn" onclick="doFlip()">çevir ↻</button>
-</div>
+<div class="hint" id="hint">tıkla · çevir · holo efekti için üzerine gel</div>
 
 <script>
-let isFlipped = false;
-let isAnimating = false;
+// ── SES EFEKTİ (Web Audio API) ──────────────────────────────
+const AudioCtx = window.AudioContext || window.webkitAudioContext;
+let audioCtx;
 
-const front = document.getElementById('front');
-const back = document.getElementById('back');
-const hint = document.getElementById('hint');
-const card = document.getElementById('cardWrap');
+function playWhoosh() {
+  try {
+    if (!audioCtx) audioCtx = new AudioCtx();
+    const dur = 0.28;
+    // Noise buffer
+    const bufSize = audioCtx.sampleRate * dur;
+    const buf = audioCtx.createBuffer(1, bufSize, audioCtx.sampleRate);
+    const data = buf.getChannelData(0);
+    for (let i = 0; i < bufSize; i++) data[i] = (Math.random() * 2 - 1);
 
-function doFlip() {
-  if (isAnimating) return;
-  isAnimating = true;
+    const src = audioCtx.createBufferSource();
+    src.buffer = buf;
 
-  // Scale down
-  card.style.transition = 'transform 0.18s ease-in';
-  card.style.transform = 'scaleX(0)';
+    // Band-pass filter — sadece "whoosh" frekansları
+    const bpf = audioCtx.createBiquadFilter();
+    bpf.type = 'bandpass';
+    bpf.frequency.setValueAtTime(800, audioCtx.currentTime);
+    bpf.frequency.exponentialRampToValueAtTime(200, audioCtx.currentTime + dur);
+    bpf.Q.value = 0.8;
 
-  setTimeout(() => {
-    // Swap faces
-    if (!isFlipped) {
-      front.style.display = 'none';
-      back.style.display = 'flex';
-      hint.textContent = 'geri dönmek için tıkla ↺';
-    } else {
-      back.style.display = 'none';
-      front.style.display = 'block';
-      hint.textContent = 'kartı çevirmek için tıkla ↻';
-    }
-    isFlipped = !isFlipped;
+    const gain = audioCtx.createGain();
+    gain.gain.setValueAtTime(0.18, audioCtx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + dur);
 
-    // Scale back up
-    card.style.transition = 'transform 0.18s ease-out';
-    card.style.transform = 'scaleX(1)';
-
-    setTimeout(() => { isAnimating = false; }, 200);
-  }, 190);
+    src.connect(bpf);
+    bpf.connect(gain);
+    gain.connect(audioCtx.destination);
+    src.start();
+    src.stop(audioCtx.currentTime + dur);
+  } catch(e) {}
 }
 
-// Bars
+function playReveal() {
+  try {
+    if (!audioCtx) audioCtx = new AudioCtx();
+    // Rising shimmer
+    const osc = audioCtx.createOscillator();
+    const gain = audioCtx.createGain();
+    osc.type = 'sine';
+    osc.frequency.setValueAtTime(220, audioCtx.currentTime);
+    osc.frequency.exponentialRampToValueAtTime(880, audioCtx.currentTime + 0.6);
+    gain.gain.setValueAtTime(0, audioCtx.currentTime);
+    gain.gain.linearRampToValueAtTime(0.12, audioCtx.currentTime + 0.1);
+    gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.7);
+    osc.connect(gain);
+    gain.connect(audioCtx.destination);
+    osc.start();
+    osc.stop(audioCtx.currentTime + 0.7);
+  } catch(e) {}
+}
+
+function playClick() {
+  try {
+    if (!audioCtx) audioCtx = new AudioCtx();
+    const osc = audioCtx.createOscillator();
+    const gain = audioCtx.createGain();
+    osc.type = 'sine';
+    osc.frequency.setValueAtTime(600, audioCtx.currentTime);
+    osc.frequency.exponentialRampToValueAtTime(200, audioCtx.currentTime + 0.08);
+    gain.gain.setValueAtTime(0.1, audioCtx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.1);
+    osc.connect(gain);
+    gain.connect(audioCtx.destination);
+    osc.start();
+    osc.stop(audioCtx.currentTime + 0.1);
+  } catch(e) {}
+}
+
+// ── STATE ────────────────────────────────────────────────────
+let isFlipped = false;
+let isAnimating = false;
+let currentTX = 0, currentTY = 0, targetTX = 0, targetTY = 0;
+let isHovered = false;
+let idleT = 0;
+
+const cardWrap = document.getElementById('cardWrap');
+const cardInner = document.getElementById('cardInner');
+const faceFront = document.getElementById('faceFront');
+const faceBack = document.getElementById('faceBack');
+const holo = document.getElementById('holo');
+const shine = document.getElementById('shine');
+const hint = document.getElementById('hint');
+
+// ── REVEAL SES ───────────────────────────────────────────────
+setTimeout(() => playReveal(), 600);
+
+// ── BARLAR ───────────────────────────────────────────────────
 setTimeout(() => {
   document.getElementById('b1').style.width = '99%';
   document.getElementById('b2').style.width = '100%';
   document.getElementById('b3').style.width = '97%';
   document.getElementById('b4').style.width = '12%';
-}, 350);
+}, 500);
 
-// 3D tilt (front only)
-let cx = 0, cy = 0, tx = 0, ty = 0;
-card.addEventListener('mousemove', e => {
-  if (isFlipped) return;
-  const r = card.getBoundingClientRect();
-  tx = ((e.clientY - r.top) / r.height - 0.5) * -13;
-  ty = ((e.clientX - r.left) / r.width - 0.5) * 13;
+// ── PARTİKÜLLER ─────────────────────────────────────────────
+const pCols = ['rgba(167,139,250,.6)','rgba(52,211,153,.5)','rgba(56,189,248,.45)','rgba(251,191,36,.45)'];
+for (let i = 0; i < 20; i++) {
+  const p = document.createElement('div');
+  p.className = 'particle';
+  const s = 2 + Math.random() * 3;
+  p.style.cssText = `width:${s}px;height:${s}px;left:${8+Math.random()*84}%;bottom:${Math.random()*20}%;background:${pCols[i%4]};--dx:${(Math.random()-.5)*50}px;animation-duration:${3+Math.random()*5}s;animation-delay:${Math.random()*4}s;`;
+  document.body.appendChild(p);
+}
+
+// ── MOUSE MOVE — 3D TILT + HOLO ──────────────────────────────
+cardWrap.addEventListener('mousemove', e => {
+  const r = cardWrap.getBoundingClientRect();
+  const x = (e.clientX - r.left) / r.width;
+  const y = (e.clientY - r.top) / r.height;
+  targetTX = (y - 0.5) * -20;
+  targetTY = (x - 0.5) * 20;
+  holo.style.backgroundPosition = `${x*100}% ${y*100}%`;
+  shine.style.setProperty('--mx', (x * 100) + '%');
+  shine.style.setProperty('--my', (y * 100) + '%');
 });
-card.addEventListener('mouseleave', () => { tx = 0; ty = 0; });
 
-(function tilt() {
-  cx += (tx - cx) * 0.1;
-  cy += (ty - cy) * 0.1;
-  if (!isAnimating && !isFlipped) {
-    card.style.transform = `rotateX(${cx}deg) rotateY(${cy}deg)`;
+cardWrap.addEventListener('mouseenter', () => { isHovered = true; });
+cardWrap.addEventListener('mouseleave', () => {
+  isHovered = false;
+  targetTX = 0;
+  targetTY = 0;
+});
+
+// ── TILT LOOP ─────────────────────────────────────────────────
+(function tiltLoop() {
+  currentTX += (targetTX - currentTX) * 0.1;
+  currentTY += (targetTY - currentTY) * 0.1;
+  if (!isAnimating) {
+    cardInner.style.transform = `perspective(900px) rotateX(${currentTX}deg) rotateY(${currentTY}deg)`;
   }
-  requestAnimationFrame(tilt);
+  requestAnimationFrame(tiltLoop);
 })();
 
-// Particles
-const scene = document.getElementById('scene');
-['rgba(167,139,250,.6)','rgba(52,211,153,.5)','rgba(56,189,248,.45)','rgba(251,191,36,.45)'].forEach((c, ci) => {
-  for (let i = 0; i < 5; i++) {
-    const p = document.createElement('div');
-    p.className = 'particle';
-    const s = 2 + Math.random() * 3;
-    p.style.cssText = `width:${s}px;height:${s}px;left:${8+Math.random()*84}%;bottom:${Math.random()*20}%;background:${c};--dx:${(Math.random()-.5)*50}px;animation-duration:${3+Math.random()*5}s;animation-delay:${Math.random()*4}s;`;
-    scene.appendChild(p);
+// ── İDLE SWAY ────────────────────────────────────────────────
+(function idleSway() {
+  if (!isHovered && !isAnimating) {
+    idleT += 0.012;
+    targetTX = Math.sin(idleT * 0.8) * 3;
+    targetTY = Math.sin(idleT) * 5;
   }
+  requestAnimationFrame(idleSway);
+})();
+
+// ── CLICK — RİPPLE + FLIP ────────────────────────────────────
+cardWrap.addEventListener('click', e => {
+  const r = cardWrap.getBoundingClientRect();
+  const rEl = document.createElement('div');
+  rEl.className = 'ripple';
+  rEl.style.left = (e.clientX - r.left) + 'px';
+  rEl.style.top = (e.clientY - r.top) + 'px';
+  rEl.style.borderColor = isFlipped ? 'rgba(52,211,153,0.6)' : 'rgba(167,139,250,0.6)';
+  cardWrap.appendChild(rEl);
+  setTimeout(() => rEl.remove(), 700);
+  playClick();
+  doFlip();
 });
+
+// ── FLIP — scaleX ile kapan, yüz değiştir, aç ────────────────
+function doFlip() {
+  if (isAnimating) return;
+  isAnimating = true;
+  playWhoosh();
+
+  // 1. Kart Y ekseninde kapanır
+  const closeAnim = cardInner.animate([
+    { transform: `perspective(900px) rotateX(0deg) rotateY(0deg) scaleX(1)` },
+    { transform: `perspective(900px) rotateX(4deg) rotateY(0deg) scaleX(0)` }
+  ], { duration: 180, easing: 'ease-in', fill: 'forwards' });
+
+  closeAnim.onfinish = () => {
+    // 2. Yüzü değiştir
+    if (!isFlipped) {
+      faceFront.style.display = 'none';
+      faceBack.style.display = 'flex';
+      hint.textContent = 'geri dönmek için tekrar tıkla ↺';
+    } else {
+      faceBack.style.display = 'none';
+      faceFront.style.display = 'block';
+      hint.textContent = 'tıkla · çevir · holo efekti için üzerine gel';
+    }
+    isFlipped = !isFlipped;
+
+    // 3. Kart açılır
+    const openAnim = cardInner.animate([
+      { transform: `perspective(900px) rotateX(4deg) rotateY(0deg) scaleX(0)` },
+      { transform: `perspective(900px) rotateX(0deg) rotateY(0deg) scaleX(1)` }
+    ], { duration: 220, easing: 'cubic-bezier(0.34,1.56,0.64,1)', fill: 'forwards' });
+
+    openAnim.onfinish = () => {
+      cardInner.getAnimations().forEach(a => a.cancel());
+      currentTX = 0; currentTY = 0;
+      isAnimating = false;
+    };
+  };
+}
 </script>
+</body>
+</html>
