@@ -1,0 +1,755 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1"/>
+<title>Skin Lore — Benzoil Peroksit · dr.bengisuege</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Nunito:wght@700;800;900&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet"/>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+html,body{width:100%;height:100%;overflow:hidden;background:#000;font-family:'Nunito',sans-serif;}
+
+/* BG */
+.bg{position:fixed;inset:0;background:radial-gradient(ellipse 80% 60% at 50% 90%,#1a0800 0%,#0f0500 50%,#000 100%);z-index:0;}
+.flash{position:fixed;inset:0;background:#fff;z-index:999;opacity:0;pointer-events:none;}
+.shockwave{position:fixed;border-radius:50%;pointer-events:none;z-index:50;transform:translate(-50%,-50%) scale(0);opacity:0;}
+.debris{position:fixed;pointer-events:none;z-index:51;}
+.slines{position:fixed;inset:0;pointer-events:none;z-index:5;opacity:0;}
+.gglow{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:700px;height:250px;pointer-events:none;z-index:1;}
+@keyframes fpRise{0%{opacity:0;transform:translateY(0) translateX(0);}10%{opacity:.5;}90%{opacity:.3;}100%{opacity:0;transform:translateY(-90vh) translateX(var(--dx));}}
+.fp{position:fixed;border-radius:50%;pointer-events:none;z-index:1;animation:fpRise linear infinite;}
+@keyframes twinkle{0%,100%{opacity:.15;}50%{opacity:.8;}}
+body::after{content:'';position:fixed;inset:0;background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,0,0,.022) 2px,rgba(0,0,0,.022) 4px);pointer-events:none;z-index:998;}
+
+/* PACK */
+#pack-screen{position:fixed;inset:0;z-index:100;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:22px;background:radial-gradient(ellipse 90% 70% at 50% 60%,#1a0800 0%,#080300 60%,#000 100%);}
+.pack-outer{position:relative;width:200px;height:310px;cursor:pointer;filter:drop-shadow(0 0 35px rgba(132,204,22,.55)) drop-shadow(0 0 70px rgba(132,204,22,.25));}
+.pack-outer:hover{filter:drop-shadow(0 0 50px rgba(132,204,22,.75)) drop-shadow(0 0 100px rgba(132,204,22,.35));}
+.pack-body{width:100%;height:100%;border-radius:16px;background:linear-gradient(155deg,#1f0a00,#140600,#1a0800);border:2px solid rgba(251,146,60,.5);position:relative;overflow:hidden;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;}
+.pack-holo{position:absolute;inset:0;border-radius:16px;background:linear-gradient(105deg,transparent 20%,rgba(251,146,60,.25) 33%,rgba(234,88,12,.2) 46%,rgba(252,211,77,.18) 59%,transparent 72%);background-size:200% 200%;animation:packShimmer 3s ease-in-out infinite;mix-blend-mode:screen;}
+@keyframes packShimmer{0%{background-position:0% 0%;}50%{background-position:100% 100%;}100%{background-position:0% 0%;}}
+.pack-body::before{content:'';position:absolute;inset:0;border-radius:16px;background:repeating-linear-gradient(55deg,transparent,transparent 7px,rgba(255,255,255,.025) 7px,rgba(255,255,255,.025) 8px);pointer-events:none;}
+.pack-logo{font-family:'Space Mono',monospace;font-size:9px;letter-spacing:.18em;color:rgba(163,230,53,.55);text-transform:uppercase;z-index:2;}
+.pack-em{font-size:40px;z-index:2;animation:packFloat 2.2s ease-in-out infinite;filter:drop-shadow(0 0 16px rgba(132,204,22,.85));}
+@keyframes packFloat{0%,100%{transform:translateY(0) scale(1);}50%{transform:translateY(-7px) scale(1.04);}}
+.pack-title{font-family:'Bebas Neue',sans-serif;font-size:32px;color:#fff;line-height:.95;letter-spacing:.04em;text-align:center;text-shadow:0 0 24px rgba(132,204,22,.7);z-index:2;}
+.pack-sub{font-family:'Space Mono',monospace;font-size:8px;color:rgba(163,230,53,.45);letter-spacing:.1em;z-index:2;}
+.pcd{position:absolute;width:11px;height:11px;z-index:3;}
+.pcd.tl{top:8px;left:8px;border-top:1.5px solid rgba(132,204,22,.6);border-left:1.5px solid rgba(132,204,22,.6);}
+.pcd.tr{top:8px;right:8px;border-top:1.5px solid rgba(132,204,22,.6);border-right:1.5px solid rgba(132,204,22,.6);}
+.pcd.bl{bottom:8px;left:8px;border-bottom:1.5px solid rgba(132,204,22,.6);border-left:1.5px solid rgba(132,204,22,.6);}
+.pcd.br{bottom:8px;right:8px;border-bottom:1.5px solid rgba(132,204,22,.6);border-right:1.5px solid rgba(132,204,22,.6);}
+.tear-line{position:absolute;left:0;right:0;height:2px;top:38%;background:linear-gradient(90deg,transparent,rgba(163,230,53,.5),rgba(255,255,255,.4),rgba(163,230,53,.5),transparent);box-shadow:0 0 8px rgba(132,204,22,.6);opacity:0;}
+.pack-cta{font-family:'Space Mono',monospace;font-size:9.5px;color:rgba(163,230,53,.5);letter-spacing:.12em;text-transform:uppercase;animation:ctaBlink 1.8s ease-in-out infinite;}
+@keyframes ctaBlink{0%,100%{opacity:.4;}50%{opacity:.95;}}
+
+/* FLY CARD */
+#fly-card{position:fixed;width:160px;height:240px;border-radius:14px;z-index:200;pointer-events:none;opacity:0;background:linear-gradient(145deg,#1a0800,#0f0500,#1a0a00);border:1.5px solid rgba(251,146,60,.55);display:flex;align-items:center;justify-content:center;font-size:44px;filter:drop-shadow(0 0 30px rgba(251,146,60,.85));box-shadow:0 0 60px rgba(251,146,60,.4),inset 0 0 30px rgba(251,146,60,.08);}
+
+/* CARD SCENE — position only, no transform-style */
+#card-scene{position:fixed;left:50%;top:50%;transform:translate(-50%,-50%);width:300px;height:450px;z-index:10;pointer-events:none;opacity:0;}
+
+/* card-3d — rotation + perspective */
+#c3d{width:100%;height:100%;position:relative;}
+
+/* FRONT and BACK — absolutely positioned, no 3D tricks */
+.card-face{position:absolute;inset:0;border-radius:20px;overflow:hidden;transition:opacity .0s;}
+#cf{background:linear-gradient(145deg,#1a0800,#0f0500,#1a0a00);border:1.5px solid rgba(251,146,60,.5);}
+#cb{background:linear-gradient(145deg,#1a0a00,#0f0600,#1f0d00);border:1.5px solid rgba(234,88,12,.45);display:flex;flex-direction:column;opacity:0;}
+
+/* holo + shine */
+.holo{position:absolute;inset:0;border-radius:20px;pointer-events:none;z-index:2;opacity:0;mix-blend-mode:color-dodge;background:conic-gradient(from 0deg at var(--hx,50%) var(--hy,50%),rgba(251,146,60,.3),rgba(234,88,12,.24),rgba(252,211,77,.2),rgba(239,68,68,.22),rgba(251,146,60,.3));transition:opacity .2s;}
+.shine{position:absolute;inset:0;border-radius:20px;pointer-events:none;z-index:3;opacity:0;background:radial-gradient(circle at var(--mx,50%) var(--my,50%),rgba(255,200,120,.18) 0%,transparent 55%);transition:opacity .2s;}
+
+/* corners */
+.cd{position:absolute;width:12px;height:12px;pointer-events:none;z-index:4;}
+.ftl{top:9px;left:9px;border-top:1.5px solid rgba(251,146,60,.65);border-left:1.5px solid rgba(251,146,60,.65);}
+.ftr{top:9px;right:9px;border-top:1.5px solid rgba(251,146,60,.65);border-right:1.5px solid rgba(251,146,60,.65);}
+.fbl{bottom:9px;left:9px;border-bottom:1.5px solid rgba(251,146,60,.65);border-left:1.5px solid rgba(251,146,60,.65);}
+.fbr{bottom:9px;right:9px;border-bottom:1.5px solid rgba(251,146,60,.65);border-right:1.5px solid rgba(251,146,60,.65);}
+.btl{top:9px;left:9px;border-top:1.5px solid rgba(234,88,12,.55);border-left:1.5px solid rgba(234,88,12,.55);}
+.btr{top:9px;right:9px;border-top:1.5px solid rgba(234,88,12,.55);border-right:1.5px solid rgba(234,88,12,.55);}
+.bbl{bottom:9px;left:9px;border-bottom:1.5px solid rgba(234,88,12,.55);border-left:1.5px solid rgba(234,88,12,.55);}
+.bbr{bottom:9px;right:9px;border-bottom:1.5px solid rgba(234,88,12,.55);border-right:1.5px solid rgba(234,88,12,.55);}
+
+/* FRONT styles */
+.badge{display:inline-flex;align-items:center;gap:5px;background:rgba(132,204,22,.18);border:1px solid rgba(132,204,22,.38);border-radius:20px;padding:4px 11px;font-family:'Space Mono',monospace;font-size:8px;color:#d9f99d;letter-spacing:.1em;text-transform:uppercase;}
+.cname{font-family:'Bebas Neue',sans-serif;font-size:44px;color:#fff;line-height:.92;text-shadow:0 0 28px rgba(163,230,53,.8);letter-spacing:.02em;}
+.csub{font-family:'Space Mono',monospace;font-size:8.5px;color:rgba(187,247,208,.45);margin-top:4px;letter-spacing:.07em;}
+.artbox{margin:0 18px;height:116px;border-radius:13px;background:linear-gradient(135deg,#1a0800,#261000,#1f0a00);border:1px solid rgba(251,146,60,.25);display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;}
+.ring{position:absolute;border-radius:50%;border:1px solid rgba(251,146,60,.15);animation:rp 3s ease-in-out infinite;}
+@keyframes rp{0%,100%{opacity:.3;transform:scale(1);}50%{opacity:.7;transform:scale(1.06);}}
+.artglow{position:absolute;inset:0;background:radial-gradient(circle at 50% 60%,rgba(251,146,60,.28) 0%,transparent 65%);animation:ag 2.5s ease-in-out infinite alternate;pointer-events:none;}
+@keyframes ag{0%{opacity:.4;}100%{opacity:.9;}}
+.em{font-size:50px;position:relative;z-index:2;filter:drop-shadow(0 0 18px rgba(251,146,60,.9));animation:emf 3s ease-in-out infinite;}
+@keyframes emf{0%,100%{transform:translateY(0);}50%{transform:translateY(-6px);}}
+.srow{display:flex;align-items:center;gap:7px;margin-bottom:8px;}
+.slbl{font-family:'Space Mono',monospace;font-size:7.5px;color:rgba(254,215,170,.42);letter-spacing:.07em;text-transform:uppercase;width:72px;flex-shrink:0;}
+.sbg{flex:1;height:6px;border-radius:10px;background:rgba(255,255,255,.05);overflow:hidden;}
+.sfill{height:100%;border-radius:10px;width:0%;transition:width 1.4s cubic-bezier(.4,0,.2,1);}
+.sval{font-family:'Bebas Neue',sans-serif;font-size:13px;width:22px;text-align:right;flex-shrink:0;}
+.divider{margin:9px 18px;height:1px;background:linear-gradient(90deg,transparent,rgba(251,146,60,.3),transparent);}
+.sp{padding:0 18px 8px;font-family:'Nunito',sans-serif;font-size:11px;font-weight:700;color:rgba(254,215,170,.82);line-height:1.5;font-style:italic;}
+.sig{padding:0 18px 5px;display:flex;align-items:center;gap:8px;}
+.sigline{flex:1;height:1px;background:linear-gradient(90deg,transparent,rgba(251,146,60,.25));}
+.sigtxt{font-family:'Space Mono',monospace;font-size:8px;color:rgba(254,215,170,.42);letter-spacing:.07em;}
+.foot{padding:0 18px 13px;display:flex;justify-content:space-between;align-items:center;}
+.rar{font-family:'Space Mono',monospace;font-size:8.5px;color:#fb923c;letter-spacing:.06em;display:flex;align-items:center;gap:4px;}
+.chip{font-family:'Space Mono',monospace;font-size:7.5px;padding:3px 7px;border-radius:10px;background:rgba(251,146,60,.14);border:1px solid rgba(251,146,60,.3);color:#fed7aa;}
+.chip-warn{font-family:'Space Mono',monospace;font-size:7.5px;padding:3px 7px;border-radius:10px;background:rgba(239,68,68,.14);border:1px solid rgba(239,68,68,.28);color:#fca5a5;}
+
+/* BACK styles */
+.bhead{padding:14px 18px 10px;border-bottom:1px solid rgba(234,179,8,.15);}
+.bbadge{display:inline-flex;align-items:center;gap:5px;background:rgba(251,146,60,.13);border:1px solid rgba(251,146,60,.3);border-radius:20px;padding:4px 11px;font-family:'Space Mono',monospace;font-size:8px;color:#fef08a;letter-spacing:.1em;text-transform:uppercase;margin-bottom:6px;}
+.btitle{font-family:'Bebas Neue',sans-serif;font-size:18px;color:#fff;letter-spacing:.04em;text-shadow:0 0 14px rgba(251,146,60,.6);}
+.bsec{padding:9px 18px 0;}
+.bstitle{font-family:'Space Mono',monospace;font-size:7.5px;color:rgba(254,215,170,.42);letter-spacing:.12em;text-transform:uppercase;margin-bottom:8px;display:flex;align-items:center;gap:8px;}
+.bstitle::after{content:'';flex:1;height:1px;background:linear-gradient(90deg,rgba(251,146,60,.2),transparent);}
+.prow{display:flex;align-items:flex-start;gap:9px;margin-bottom:8px;}
+.pdot{width:6px;height:6px;border-radius:50%;flex-shrink:0;margin-top:5px;}
+.ptxt{font-family:'Nunito',sans-serif;font-size:11px;font-weight:700;color:rgba(254,215,170,.85);line-height:1.5;}
+.psub{font-family:'Space Mono',monospace;font-size:7.5px;color:rgba(251,146,60,.4);letter-spacing:.05em;display:block;margin-top:1px;}
+.crow{display:flex;align-items:flex-start;gap:9px;padding:7px 10px;border-radius:10px;margin-bottom:6px;background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.2);}
+.ctxt{font-family:'Nunito',sans-serif;font-size:10px;font-weight:700;color:rgba(252,165,165,.88);line-height:1.4;}
+.csub2{font-family:'Space Mono',monospace;font-size:7px;color:rgba(252,165,165,.38);display:block;margin-top:1px;}
+.orow{display:flex;align-items:center;gap:9px;padding:7px 10px;border-radius:10px;margin-bottom:6px;background:rgba(251,146,60,.07);border:1px solid rgba(251,146,60,.2);}
+.otxt{font-family:'Nunito',sans-serif;font-size:10px;font-weight:700;color:rgba(254,215,170,.88);line-height:1.4;}
+.bfooter{margin-top:auto;padding:9px 18px 13px;border-top:1px solid rgba(251,146,60,.15);display:flex;justify-content:space-between;align-items:center;}
+.bfl{font-family:'Space Mono',monospace;font-size:7.5px;color:rgba(254,215,170,.28);letter-spacing:.07em;}
+.bfr{font-family:'Nunito',sans-serif;font-size:9px;font-weight:900;color:rgba(254,215,170,.5);}
+
+/* RIPPLE */
+.ripple{position:absolute;border-radius:50%;border:2px solid rgba(132,204,22,.7);pointer-events:none;z-index:15;animation:ro .65s ease-out forwards;}
+@keyframes ro{0%{transform:translate(-50%,-50%) scale(0);opacity:.8;}100%{transform:translate(-50%,-50%) scale(5);opacity:0;}}
+
+/* HUD */
+.hud{position:fixed;inset:0;pointer-events:none;z-index:30;opacity:0;transition:opacity .6s;}
+.hud.on{opacity:1;}
+.hud-t{position:absolute;top:0;left:0;right:0;padding:18px 22px;display:flex;justify-content:space-between;}
+.hud-logo{font-family:'Bebas Neue',sans-serif;font-size:15px;letter-spacing:.1em;background:linear-gradient(135deg,#fed7aa,#fb923c,#ea580c);-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+.hud-by{font-family:'Space Mono',monospace;font-size:7.5px;color:rgba(163,230,53,.35);letter-spacing:.1em;margin-top:1px;}
+.hud-r{font-family:'Space Mono',monospace;font-size:7.5px;color:rgba(251,146,60,.7);letter-spacing:.12em;text-transform:uppercase;text-align:right;}
+.hud-b{position:absolute;bottom:0;left:0;right:0;padding:18px 22px;display:flex;justify-content:space-between;align-items:flex-end;}
+.flipbtn{font-family:'Space Mono',monospace;font-size:9px;color:rgba(251,146,60,.6);letter-spacing:.1em;pointer-events:all;cursor:pointer;padding:8px 16px;border-radius:20px;border:1px solid rgba(251,146,60,.22);background:rgba(251,146,60,.07);transition:all .2s;animation:hb 2.2s ease-in-out infinite;}
+.flipbtn:hover{background:rgba(251,146,60,.2);color:rgba(254,215,170,.95);}
+@keyframes hb{0%,100%{opacity:.55;}50%{opacity:1;}}
+@keyframes sk{0%,100%{transform:none;}12%{transform:translate(-5px,3px);}24%{transform:translate(5px,-3px);}36%{transform:translate(-3px,5px);}48%{transform:translate(3px,-2px);}60%{transform:translate(-2px,3px);}72%{transform:translate(2px,-5px);}84%{transform:translate(-3px,2px);}96%{transform:translate(3px,3px);}}
+</style>
+</head>
+<body>
+
+<div class="bg"></div>
+<div class="flash" id="flash"></div>
+<div class="gglow" id="gglow"></div>
+<div class="slines" id="slines"></div>
+
+<!-- PACK -->
+<div id="pack-screen">
+  <div class="pack-outer" id="pack-outer" onclick="tearPack()">
+    <div class="pack-body" id="pack-body">
+      <div class="pcd tl"></div><div class="pcd tr"></div>
+      <div class="pcd bl"></div><div class="pcd br"></div>
+      <div class="pack-holo"></div>
+      <div class="tear-line" id="tear-line"></div>
+      <div class="pack-logo">Skin Lore · Series 1</div>
+      <div class="pack-em">💣</div>
+      <div class="pack-title">Bileşen<br/>Kartları</div>
+      <div class="pack-sub">by dr.bengisuege</div>
+    </div>
+  </div>
+  <div class="pack-cta" id="pack-cta">pakete dokun · yırt</div>
+</div>
+
+<!-- FLY CARD -->
+<div id="fly-card">🔍</div>
+
+<!-- CARD SCENE -->
+<div id="card-scene">
+  <div id="c3d">
+
+    <!-- FRONT FACE -->
+    <div class="card-face" id="cf">
+      <div class="holo" id="holo"></div>
+      <div class="shine" id="shine"></div>
+      <div class="cd ftl"></div><div class="cd ftr"></div>
+      <div class="cd fbl"></div><div class="cd fbr"></div>
+
+      <div style="padding:11px 18px 7px;">
+        <div class="badge" style="margin-bottom:5px;font-size:7.5px;padding:3px 10px;">
+          <span style="width:5px;height:5px;border-radius:50%;background:#fb923c;display:inline-block;box-shadow:0 0 5px rgba(251,146,60,.85);"></span>
+          Skin Lore · Antibakteriyal
+        </div>
+        <div class="cname" style="font-size:38px;letter-spacing:.01em;">Benzoil Peroksit</div>
+        <div class="csub" style="font-size:8px;">Benzoyl Peroxide · BPO · Oksidatif Ajan</div>
+      </div>
+
+      <div class="artbox" style="height:90px;margin:0 18px;">
+        <div class="ring" style="width:140px;height:140px;top:50%;left:50%;margin:-70px 0 0 -70px;"></div>
+        <div class="ring" style="width:86px;height:86px;top:50%;left:50%;margin:-43px 0 0 -43px;animation-delay:1s;"></div>
+        <div class="artglow"></div>
+        <div class="em" style="font-size:38px;">💣</div>
+      </div>
+
+      <div style="padding:8px 18px 0;">
+        <div class="srow" style="margin-bottom:5px;"><span class="slbl" style="font-size:7px;">Akne Gücü</span><div class="sbg" style="height:5px;"><div class="sfill" id="b1" style="background:linear-gradient(90deg,#c2410c,#fb923c);box-shadow:0 0 5px rgba(251,146,60,.65);"></div></div><span class="sval" style="font-size:12px;color:#fb923c;">92</span></div>
+        <div class="srow" style="margin-bottom:5px;"><span class="slbl" style="font-size:7px;">Hız</span><div class="sbg" style="height:5px;"><div class="sfill" id="b2" style="background:linear-gradient(90deg,#b91c1c,#ef4444);box-shadow:0 0 5px rgba(239,68,68,.55);"></div></div><span class="sval" style="font-size:12px;color:#ef4444;">88</span></div>
+        <div class="srow" style="margin-bottom:5px;"><span class="slbl" style="font-size:7px;">Tolerans</span><div class="sbg" style="height:5px;"><div class="sfill" id="b3" style="background:linear-gradient(90deg,#92400e,#fbbf24);box-shadow:0 0 5px rgba(251,191,36,.5);"></div></div><span class="sval" style="font-size:12px;color:#fbbf24;">60</span></div>
+        <div class="srow" style="margin-bottom:0;"><span class="slbl" style="font-size:7px;">Drama</span><div class="sbg" style="height:5px;"><div class="sfill" id="b4" style="background:linear-gradient(90deg,#7f1d1d,#ef4444);box-shadow:0 0 5px rgba(239,68,68,.5);"></div></div><span class="sval" style="font-size:12px;color:#ef4444;">78</span></div>
+      </div>
+
+      <div class="divider" style="margin:6px 18px;"></div>
+      <div class="sp" style="font-size:9.5px;padding:0 18px 5px;line-height:1.4;">"Nükleer seçenek. P. acnes'i doğrudan öldürür. Ama yanındaki seramidin, retinolün, havlunun hepsini mahveder. Dikkat: çamaşır suyu değil ama yakın."</div>
+
+      <!-- WEAKNESS / RESISTANCE -->
+      <div style="margin:0 18px 5px;display:flex;gap:5px;">
+        <div style="flex:1;background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.22);border-radius:9px;padding:5px 8px;">
+          <div style="font-family:'Space Mono',monospace;font-size:6px;color:rgba(252,165,165,.5);letter-spacing:.1em;text-transform:uppercase;margin-bottom:3px;">Zayıflık</div>
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:2px;">
+            <span style="font-family:'Nunito',sans-serif;font-size:9px;font-weight:700;color:rgba(252,165,165,.85);">🧴 Retinol</span>
+            <span style="font-family:'Bebas Neue',sans-serif;font-size:12px;color:#ef4444;">×∞</span>
+          </div>
+          <div style="display:flex;justify-content:space-between;align-items:center;">
+            <span style="font-family:'Nunito',sans-serif;font-size:9px;font-weight:700;color:rgba(252,165,165,.85);">👕 Renkli Tekstil</span>
+            <span style="font-family:'Bebas Neue',sans-serif;font-size:12px;color:#ef4444;">×∞</span>
+          </div>
+        </div>
+        <div style="flex:1;background:rgba(251,146,60,.08);border:1px solid rgba(251,146,60,.2);border-radius:9px;padding:5px 8px;">
+          <div style="font-family:'Space Mono',monospace;font-size:6px;color:rgba(254,215,170,.45);letter-spacing:.1em;text-transform:uppercase;margin-bottom:3px;">Direnç</div>
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:2px;">
+            <span style="font-family:'Nunito',sans-serif;font-size:9px;font-weight:700;color:rgba(254,215,170,.85);">🦠 P. Acnes</span>
+            <span style="font-family:'Bebas Neue',sans-serif;font-size:12px;color:#fb923c;">−50</span>
+          </div>
+          <div style="display:flex;justify-content:space-between;align-items:center;">
+            <span style="font-family:'Nunito',sans-serif;font-size:9px;font-weight:700;color:rgba(254,215,170,.85);">💊 Direnç</span>
+            <span style="font-family:'Bebas Neue',sans-serif;font-size:12px;color:#fb923c;">YOK</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="sig" style="padding:0 18px 3px;">
+        <div class="sigline"></div>
+        <div class="sigtxt" style="font-size:7.5px;">@dr.bengisuege</div>
+        <div style="width:5px;height:5px;border-radius:50%;background:rgba(251,146,60,.45);flex-shrink:0;"></div>
+      </div>
+
+      <div class="foot" style="padding:0 18px 10px;">
+        <div class="rar" style="font-size:8px;"><span style="letter-spacing:2px;">★★★☆☆</span><span>NADİR</span></div>
+        <div style="display:flex;gap:4px;"><span class="chip" style="font-size:7px;">AKNELI</span><span class="chip-warn" style="font-size:7px;">NADİR</span></div>
+      </div>
+    </div>
+
+    <!-- BACK FACE -->
+    <div class="card-face" id="cb">
+      <div class="cd btl"></div><div class="cd btr"></div>
+      <div class="cd bbl"></div><div class="cd bbr"></div>
+
+      <div class="bhead" style="padding:10px 18px 6px;">
+        <div class="bbadge" style="margin-bottom:4px;font-size:7.5px;padding:3px 10px;">
+          <span style="width:5px;height:5px;border-radius:50%;background:#fb923c;display:inline-block;box-shadow:0 0 4px rgba(251,146,60,.8);"></span>
+          Bileşen Dosyası · BPO
+        </div>
+        <div class="btitle" style="font-size:16px;">Benzoil Peroksit — Tam Profil</div>
+      </div>
+
+      <div class="bsec" style="padding:6px 18px 0;">
+        <div class="bstitle" style="font-size:7px;margin-bottom:5px;">Bileşen Güçleri</div>
+        <div class="prow" style="margin-bottom:4px;"><div class="pdot" style="background:#fb923c;box-shadow:0 0 4px rgba(251,146,60,.7);margin-top:4px;"></div><div><div class="ptxt" style="font-size:10px;">P. acnes'i doğrudan öldürür</div><span class="psub" style="font-size:7px;">oksidatif etki · antibiyotik direnci gelişmez</span></div></div>
+        <div class="prow" style="margin-bottom:4px;"><div class="pdot" style="background:#ef4444;box-shadow:0 0 4px rgba(239,68,68,.7);margin-top:4px;"></div><div><div class="ptxt" style="font-size:10px;">İnflamasyonu hızla azaltır</div><span class="psub" style="font-size:7px;">kızarık akneyi saatler içinde yatıştırır</span></div></div>
+        <div class="prow" style="margin-bottom:4px;"><div class="pdot" style="background:#fbbf24;box-shadow:0 0 4px rgba(251,191,36,.7);margin-top:4px;"></div><div><div class="ptxt" style="font-size:10px;">Gözenek tıkanıklığını açar</div><span class="psub" style="font-size:7px;">hafif keratolotik etki · blackhead ve whitehead</span></div></div>
+        <div class="prow" style="margin-bottom:0;"><div class="pdot" style="background:#a78bfa;box-shadow:0 0 4px rgba(167,139,250,.7);margin-top:4px;"></div><div><div class="ptxt" style="font-size:10px;">Antibiyotik direncini önler</div><span class="psub" style="font-size:7px;">antibiyotikle birlikte kullanımda direnç riski azalır</span></div></div>
+      </div>
+
+      <div class="bsec" style="padding-top:6px;">
+        <div class="bstitle" style="font-size:7px;margin-bottom:5px;">Uyum Rehberi</div>
+        <div class="crow" style="margin-bottom:4px;padding:5px 9px;"><span style="font-size:11px;flex-shrink:0;">🚫</span><div><div class="ctxt" style="font-size:9.5px;">Retinol ile aynı gece kesinlikle kullanma</div><span class="csub2">etkinlik kaybı + ciddi tahriş riski</span></div></div>
+        <div class="crow" style="margin-bottom:4px;padding:5px 9px;"><span style="font-size:11px;flex-shrink:0;">👕</span><div><div class="ctxt" style="font-size:9.5px;">Renkli tekstile değdirme — ağartır</div><span class="csub2">beyaz havlu ve yastık kılıfı kullan</span></div></div>
+        <div class="orow" style="margin-bottom:4px;padding:5px 9px;"><span style="font-size:11px;flex-shrink:0;">✓</span><div class="otxt" style="font-size:9.5px;">%2.5 ile başla · cildin alıştıkça %5–10'a çık</div></div>
+        <div class="orow" style="margin-bottom:0;padding:5px 9px;"><span style="font-size:11px;flex-shrink:0;">✓</span><div class="otxt" style="font-size:9.5px;">Akşam nokta tedavisi · sabah SPF zorunlu</div></div>
+      </div>
+
+      <div class="bfooter" style="padding:6px 18px 10px;">
+        <div class="bfl">#INCI-BPO · SKIN LORE v1</div>
+        <div class="bfr">@dr.bengisuege</div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- HUD -->
+<div class="hud" id="hud">
+  <div class="hud-t">
+    <div><div class="hud-logo">Skin Lore</div><div class="hud-by">by dr.bengisuege</div></div>
+    <div class="hud-r">★★★☆☆ NADİR<br/><span style="color:rgba(251,146,60,.3);font-size:6.5px;">#INCI-BPO</span></div>
+  </div>
+  <div class="hud-b">
+    <div class="flipbtn" id="flipbtn" onclick="doFlip()">çevir ↻</div>
+    <div style="font-family:'Space Mono',monospace;font-size:7.5px;color:rgba(132,204,22,.28);text-align:right;letter-spacing:.06em;">Skin Lore<br/>Series 1</div>
+  </div>
+</div>
+
+<script>
+// ── Refs ───────────────────────────────────────────
+const flyCard   = document.getElementById('fly-card');
+const cardScene = document.getElementById('card-scene');
+const c3d       = document.getElementById('c3d');
+const hud       = document.getElementById('hud');
+const flipbtn   = document.getElementById('flipbtn');
+const cf        = document.getElementById('cf');  // front face
+const cb        = document.getElementById('cb');  // back face
+
+// ── State ──────────────────────────────────────────
+let phase       = 'pack';
+let flipped     = false;
+let animating   = false;
+let entryDone   = false;
+let cx=0, cy=0, tx=0, ty=0;
+let hovered     = false;
+let idleT       = 0;
+
+// ── Audio ──────────────────────────────────────────
+const AC = window.AudioContext || window.webkitAudioContext;
+let ac;
+function ear(){ if(!ac) ac = new AC(); }
+
+// ── FOIL PACK SES SİSTEMİ ─────────────────────────
+// Gerçek kart paketi: plastik crinkle + yırtılma + kart çekme
+
+function sndCrinkle(){
+  // Plastik crinkle — paketin tutulması
+  ear(); try{
+    const rate=ac.sampleRate;
+    const dur=.18;
+    const buf=ac.createBuffer(2,rate*dur,rate);
+    for(let ch=0;ch<2;ch++){
+      const d=buf.getChannelData(ch);
+      for(let i=0;i<d.length;i++){
+        // Spiky noise — plastik sesi karakteristik burst'ler
+        const t=i/rate;
+        const burst=Math.random()<.04?1:0; // seyrek burst'ler
+        d[i]=(Math.random()*2-1)*(burst*.8 + .06) * Math.pow(1-t/dur,.3);
+      }
+    }
+    const src=ac.createBufferSource(); src.buffer=buf;
+    const g=ac.createGain(); g.gain.setValueAtTime(.22,ac.currentTime); g.gain.exponentialRampToValueAtTime(.001,ac.currentTime+dur);
+    // Yüksek frekans — plastik hışırtısı
+    const hpf=ac.createBiquadFilter(); hpf.type='highpass'; hpf.frequency.value=3000;
+    const lpf=ac.createBiquadFilter(); lpf.type='lowpass'; lpf.frequency.value=12000;
+    src.connect(hpf); hpf.connect(lpf); lpf.connect(g); g.connect(ac.destination);
+    src.start(); src.stop(ac.currentTime+dur);
+  }catch(e){}
+}
+
+function sndTear(){
+  ear(); try{
+    const rate=ac.sampleRate;
+
+    // 1. Plastik yırtılma — uzun, keskin
+    const tearDur=.22;
+    const buf1=ac.createBuffer(1,rate*tearDur,rate);
+    const d1=buf1.getChannelData(0);
+    for(let i=0;i<d1.length;i++){
+      const t=i/rate;
+      // Yırtılma: giderek artan gürültü sonra keskin düşüş
+      const env=Math.pow(t/tearDur,.15)*Math.pow(1-t/tearDur,.4);
+      // Küçük "pop"lar — perforasyonların atlaması
+      const pop=Math.random()<.08?(Math.random()-.5)*2:0;
+      d1[i]=((Math.random()*2-1)*.5 + pop*.5)*env;
+    }
+    const src1=ac.createBufferSource(); src1.buffer=buf1;
+    const g1=ac.createGain(); g1.gain.setValueAtTime(.38,ac.currentTime); g1.gain.exponentialRampToValueAtTime(.001,ac.currentTime+tearDur);
+    const bpf1=ac.createBiquadFilter(); bpf1.type='bandpass'; bpf1.frequency.value=2400; bpf1.Q.value=.4;
+    const hpf1=ac.createBiquadFilter(); hpf1.type='highpass'; hpf1.frequency.value=800;
+    src1.connect(bpf1); bpf1.connect(hpf1); hpf1.connect(g1); g1.connect(ac.destination);
+    src1.start(); src1.stop(ac.currentTime+tearDur);
+
+    // 2. Low thud — paketin açılma sesi
+    const o=ac.createOscillator(), og=ac.createGain();
+    o.type='sine'; o.frequency.setValueAtTime(180,ac.currentTime); o.frequency.exponentialRampToValueAtTime(60,ac.currentTime+.1);
+    og.gain.setValueAtTime(.18,ac.currentTime); og.gain.exponentialRampToValueAtTime(.001,ac.currentTime+.12);
+    o.connect(og); og.connect(ac.destination); o.start(); o.stop(ac.currentTime+.12);
+  }catch(e){}
+}
+
+function sndCardSlide(){
+  // Kartın paketten çıkma sesi — smooth slide
+  ear(); try{
+    const rate=ac.sampleRate;
+    const dur=.14;
+    const buf=ac.createBuffer(1,rate*dur,rate);
+    const d=buf.getChannelData(0);
+    for(let i=0;i<d.length;i++){
+      const t=i/rate;
+      // Smooth friction noise — kart kağıdı
+      const env=Math.sin(t/dur*Math.PI); // bell curve
+      d[i]=(Math.random()*2-1)*env*.4;
+    }
+    const src=ac.createBufferSource(); src.buffer=buf;
+    const g=ac.createGain(); g.gain.setValueAtTime(.2,ac.currentTime); g.gain.exponentialRampToValueAtTime(.001,ac.currentTime+dur);
+    // Orta frekans — kağıt sesi
+    const bpf=ac.createBiquadFilter(); bpf.type='bandpass'; bpf.frequency.value=1800; bpf.Q.value=1.2;
+    src.connect(bpf); bpf.connect(g); g.connect(ac.destination);
+    src.start(); src.stop(ac.currentTime+dur);
+  }catch(e){}
+}
+
+function sndLaunch(){
+  ear(); try{
+    const buf=ac.createBuffer(1,ac.sampleRate*.5,ac.sampleRate);
+    const d=buf.getChannelData(0);
+    for(let i=0;i<d.length;i++) d[i]=(Math.random()*2-1)*Math.pow(1-i/d.length,.2);
+    const src=ac.createBufferSource(); src.buffer=buf;
+    const g=ac.createGain();
+    g.gain.setValueAtTime(0,ac.currentTime); g.gain.linearRampToValueAtTime(.35,ac.currentTime+.03); g.gain.exponentialRampToValueAtTime(.001,ac.currentTime+.5);
+    const bpf=ac.createBiquadFilter(); bpf.type='bandpass';
+    bpf.frequency.setValueAtTime(300,ac.currentTime); bpf.frequency.exponentialRampToValueAtTime(1200,ac.currentTime+.5); bpf.Q.value=.7;
+    src.connect(bpf); bpf.connect(g); g.connect(ac.destination);
+    src.start(); src.stop(ac.currentTime+.5);
+  }catch(e){}
+}
+
+function sndImpact(){
+  ear(); try{
+    const o=ac.createOscillator(), g=ac.createGain();
+    o.type='sine';
+    o.frequency.setValueAtTime(140,ac.currentTime); o.frequency.exponentialRampToValueAtTime(35,ac.currentTime+.45);
+    g.gain.setValueAtTime(.6,ac.currentTime); g.gain.exponentialRampToValueAtTime(.001,ac.currentTime+.5);
+    o.connect(g); g.connect(ac.destination); o.start(); o.stop(ac.currentTime+.5);
+    // shimmer
+    setTimeout(()=>{ ear();
+      const o2=ac.createOscillator(), g2=ac.createGain();
+      o2.type='sine';
+      o2.frequency.setValueAtTime(350,ac.currentTime); o2.frequency.exponentialRampToValueAtTime(1400,ac.currentTime+.7);
+      g2.gain.setValueAtTime(0,ac.currentTime); g2.gain.linearRampToValueAtTime(.1,ac.currentTime+.04); g2.gain.exponentialRampToValueAtTime(.001,ac.currentTime+.8);
+      o2.connect(g2); g2.connect(ac.destination); o2.start(); o2.stop(ac.currentTime+.8);
+    },80);
+  }catch(e){}
+}
+
+function sndFlip(){
+  ear(); try{
+    const buf=ac.createBuffer(1,ac.sampleRate*.22,ac.sampleRate);
+    const d=buf.getChannelData(0);
+    for(let i=0;i<d.length;i++) d[i]=(Math.random()*2-1);
+    const src=ac.createBufferSource(); src.buffer=buf;
+    const g=ac.createGain(); g.gain.setValueAtTime(.14,ac.currentTime); g.gain.exponentialRampToValueAtTime(.001,ac.currentTime+.22);
+    const bpf=ac.createBiquadFilter(); bpf.type='bandpass';
+    bpf.frequency.setValueAtTime(500,ac.currentTime); bpf.frequency.exponentialRampToValueAtTime(180,ac.currentTime+.22); bpf.Q.value=.9;
+    src.connect(bpf); bpf.connect(g); g.connect(ac.destination);
+    src.start(); src.stop(ac.currentTime+.22);
+  }catch(e){}
+}
+
+function sndClick(){
+  ear(); try{
+    const o=ac.createOscillator(), g=ac.createGain();
+    o.type='sine';
+    o.frequency.setValueAtTime(480,ac.currentTime); o.frequency.exponentialRampToValueAtTime(170,ac.currentTime+.09);
+    g.gain.setValueAtTime(.09,ac.currentTime); g.gain.exponentialRampToValueAtTime(.001,ac.currentTime+.1);
+    o.connect(g); g.connect(ac.destination); o.start(); o.stop(ac.currentTime+.1);
+  }catch(e){}
+}
+
+// ── FX ────────────────────────────────────────────
+function doFlash(){
+  const f=document.getElementById('flash');
+  f.style.opacity='1';
+  setTimeout(()=>{ f.style.transition='opacity .35s'; f.style.opacity='0'; setTimeout(()=>{ f.style.transition=''; },400); },55);
+}
+function doShake(){
+  document.body.style.animation='none';
+  requestAnimationFrame(()=>{ document.body.style.animation='sk .38s ease'; setTimeout(()=>{ document.body.style.animation=''; },400); });
+}
+function spawnShockwave(x,y,color,delay){
+  setTimeout(()=>{
+    const sw=document.createElement('div'); sw.className='shockwave';
+    sw.style.cssText=`width:70px;height:70px;left:${x}px;top:${y}px;border:3px solid ${color};`;
+    document.body.appendChild(sw);
+    requestAnimationFrame(()=>{
+      sw.style.transition='transform .65s ease-out,opacity .65s ease-out';
+      sw.style.opacity='.85';
+      requestAnimationFrame(()=>{ sw.style.transform='translate(-50%,-50%) scale(14)'; sw.style.opacity='0'; setTimeout(()=>sw.remove(),750); });
+    });
+  },delay);
+}
+function spawnDebris(x,y,color){
+  for(let i=0;i<28;i++){
+    const d=document.createElement('div'); d.className='debris';
+    const s=2+Math.random()*7;
+    const angle=Math.random()*Math.PI*2;
+    const dist=60+Math.random()*200;
+    const dur=350+Math.random()*450;
+    d.style.cssText=`width:${s}px;height:${s}px;left:${x}px;top:${y}px;background:${color};box-shadow:0 0 ${s}px ${color};border-radius:${Math.random()>.5?'50%':'3px'};`;
+    document.body.appendChild(d);
+    const tx=Math.cos(angle)*dist, ty=Math.sin(angle)*dist-Math.random()*90;
+    d.animate([{transform:'translate(0,0) scale(1)',opacity:1},{transform:`translate(${tx}px,${ty}px) scale(.1) rotate(${(Math.random()-.5)*720}deg)`,opacity:0}],{duration:dur,easing:'cubic-bezier(.2,0,1,1)',fill:'forwards'});
+    setTimeout(()=>d.remove(),dur+50);
+  }
+}
+function spawnPackBurst(){
+  const r=document.getElementById('pack-outer').getBoundingClientRect();
+  const bx=r.left+r.width/2, by=r.top+r.height/2;
+  const cols=['rgba(132,204,22,.9)','rgba(234,179,8,.9)','rgba(163,230,53,.9)','rgba(255,255,255,.8)'];
+  for(let i=0;i<40;i++){
+    const p=document.createElement('div'); p.className='debris';
+    const s=3+Math.random()*8;
+    const angle=Math.random()*Math.PI*2, dist=40+Math.random()*160, dur=300+Math.random()*400;
+    const col=cols[Math.floor(Math.random()*cols.length)];
+    p.style.cssText=`width:${s}px;height:${s}px;left:${bx}px;top:${by}px;background:${col};box-shadow:0 0 ${s}px ${col};border-radius:50%;`;
+    document.body.appendChild(p);
+    p.animate([{transform:'translate(0,0) scale(1)',opacity:1},{transform:`translate(${Math.cos(angle)*dist}px,${Math.sin(angle)*dist}px) scale(.1)`,opacity:0}],{duration:dur,easing:'ease-out',fill:'forwards'});
+    setTimeout(()=>p.remove(),dur+50);
+  }
+}
+function spawnGroundGlow(){
+  const g=document.getElementById('gglow');
+  g.style.background='radial-gradient(ellipse at 50% 100%,rgba(251,146,60,.55) 0%,rgba(234,88,12,.2) 30%,transparent 70%)';
+  setTimeout(()=>{ g.style.transition='background 2s'; g.style.background='radial-gradient(ellipse at 50% 100%,rgba(251,146,60,.12) 0%,transparent 70%)'; },80);
+}
+
+// ── Stars & particles ─────────────────────────────
+for(let i=0;i<70;i++){
+  const s=document.createElement('div');
+  const sz=.8+Math.random()*2;
+  s.style.cssText=`position:fixed;border-radius:50%;pointer-events:none;z-index:1;background:rgba(255,255,255,${.1+Math.random()*.5});width:${sz}px;height:${sz}px;left:${Math.random()*100}%;top:${Math.random()*100}%;animation:twinkle ${2+Math.random()*4}s ease-in-out ${Math.random()*4}s infinite;`;
+  document.body.appendChild(s);
+}
+const PC=['rgba(251,146,60,.6)','rgba(234,88,12,.55)','rgba(252,211,77,.5)','rgba(239,68,68,.45)','rgba(251,191,36,.4)'];
+for(let i=0;i<16;i++){
+  const p=document.createElement('div'); p.className='fp';
+  const s=1.5+Math.random()*3;
+  p.style.cssText=`width:${s}px;height:${s}px;left:${Math.random()*100}%;bottom:0;background:${PC[i%5]};--dx:${(Math.random()-.5)*100}px;animation-duration:${8+Math.random()*10}s;animation-delay:${Math.random()*8}s;`;
+  document.body.appendChild(p);
+}
+
+// Speed lines
+(()=>{
+  const sl=document.getElementById('slines');
+  const W=window.innerWidth, H=window.innerHeight;
+  for(let i=0;i<36;i++){
+    const angle=(i/36)*360, rad=angle*Math.PI/180;
+    const len=50+Math.random()*110, dist=40+Math.random()*70;
+    const el=document.createElement('div');
+    el.style.cssText=`position:absolute;width:${1+Math.random()*1.5}px;height:${len}px;left:${W/2+Math.cos(rad)*dist}px;top:${H/2+Math.sin(rad)*dist}px;transform:rotate(${angle+90}deg) translateY(-${len}px);background:linear-gradient(180deg,transparent,rgba(132,204,22,${.25+Math.random()*.35}),transparent);`;
+    sl.appendChild(el);
+  }
+})();
+
+// ── PACK TEAR ─────────────────────────────────────
+function tearPack(){
+  if(phase!=='pack') return;
+  phase='tear';
+  document.getElementById('pack-cta').style.opacity='0';
+  const pack=document.getElementById('pack-outer');
+  const ps=document.createElement('style');
+  ps.textContent='@keyframes packShake{0%,100%{transform:rotate(0);}33%{transform:rotate(-3deg);}66%{transform:rotate(3deg);}}';
+  document.head.appendChild(ps);
+  let shakes=0;
+  function shakePack(){
+    pack.style.animation='none';
+    requestAnimationFrame(()=>{
+      pack.style.animation='packShake .14s ease';
+      // crinkle ses her sallama ile
+      sndCrinkle();
+      shakes++;
+      if(shakes<3) setTimeout(shakePack,140); else setTimeout(doTear,140);
+    });
+  }
+  sndCrinkle(); shakePack();
+}
+
+function doTear(){
+  const tl=document.getElementById('tear-line');
+  tl.style.opacity='1'; tl.style.transition='opacity .1s';
+  // Yırtılma sesi
+  sndTear();
+  setTimeout(()=>{
+    sndTear(); // ikinci yırtılma
+    setTimeout(()=>sndCardSlide(),80); // kart çıkma sesi
+    spawnPackBurst(); doFlash();
+    const pr=document.getElementById('pack-outer').getBoundingClientRect();
+    const pcx=pr.left+pr.width/2, pcy=pr.top+pr.height/2;
+    flyCard.style.cssText=`position:fixed;width:160px;height:240px;border-radius:14px;z-index:200;pointer-events:none;left:${pcx}px;top:${pcy}px;opacity:1;background:linear-gradient(145deg,#1a0800,#0f0500,#1a0a00);border:1.5px solid rgba(251,146,60,.55);display:flex;align-items:center;justify-content:center;font-size:44px;`;
+    // hide pack
+    setTimeout(()=>{ document.getElementById('pack-screen').style.transition='opacity .2s'; document.getElementById('pack-screen').style.opacity='0'; setTimeout(()=>{ document.getElementById('pack-screen').style.display='none'; },220); },100);
+    sndLaunch();
+    setTimeout(()=>{
+      // speed lines
+      const sl=document.getElementById('slines');
+      sl.style.transition='none'; sl.style.opacity='1';
+      setTimeout(()=>{ sl.style.transition='opacity .3s'; sl.style.opacity='0'; },200);
+      // ── TUMBLING FLIGHT ──────────────────────────
+      const W=window.innerWidth, H=window.innerHeight;
+      const peakX=W*.5+(Math.random()-.5)*W*.25, peakY=-H*.22;
+      const totalDur=1150, t0=performance.now();
+      const spinY=810+Math.random()*360, spinX=200+Math.random()*160, spinZ=(Math.random()-.5)*100;
+      let raf;
+      function flightFrame(now){
+        const elapsed=now-t0, p=Math.min(elapsed/totalDur,1);
+        let x,y,scale,opacity,rotY,rotX,rotZ,brightness;
+        if(p<.52){
+          const t=p/.52, ease=t<.5?2*t*t:1-Math.pow(-2*t+2,2)/2;
+          x=pcx+(peakX-pcx)*ease; y=pcy+(peakY-pcy)*ease;
+          scale=.32+ease*.38; opacity=.65+ease*.25; brightness=1.5+ease*.6;
+          rotY=spinY*t*.48; rotX=-spinX*t*.48; rotZ=spinZ*t*.48;
+        } else {
+          const t=(p-.52)/.48, ease=t*t*(3-2*t);
+          x=peakX+(W*.5-peakX)*ease; y=peakY+(H*.3-peakY)*ease;
+          scale=.7+ease*4.2; opacity=.9-ease*.55; brightness=2.1+ease*1.8;
+          rotY=spinY*.48+spinY*t*.52; rotX=-spinX*.48+spinX*t*.52; rotZ=spinZ*.48+spinZ*t*.52;
+        }
+        const gp=.55+Math.abs(Math.sin(p*Math.PI*5))*.45;
+        flyCard.style.left=x+'px'; flyCard.style.top=y+'px';
+        flyCard.style.opacity=opacity.toFixed(2);
+        flyCard.style.transform=`translate(-50%,-50%) scale(${scale.toFixed(3)}) rotateY(${rotY.toFixed(1)}deg) rotateX(${rotX.toFixed(1)}deg) rotateZ(${rotZ.toFixed(1)}deg)`;
+        flyCard.style.filter=`drop-shadow(0 0 ${(30*gp).toFixed(0)}px rgba(251,146,60,${(0.8*gp).toFixed(2)})) brightness(${brightness.toFixed(2)})`;
+        if(p<1){ raf=requestAnimationFrame(flightFrame); }
+        else {
+          cancelAnimationFrame(raf);
+          flyCard.style.opacity='0';
+
+          // Kart sahnesini hazırla ama GÖRÜNMEZ tut
+          cardScene.style.opacity='0';
+          c3d.style.transition='none';
+          c3d.style.transform='translateY(0) scale(1) rotateX(0deg) rotateY(0deg)';
+          c3d.style.filter='drop-shadow(0 28px 55px rgba(0,0,0,.9)) drop-shadow(0 0 45px rgba(132,204,22,.4))';
+
+          const sl2=document.getElementById('slines');
+          sl2.style.transition='none'; sl2.style.opacity='1';
+          setTimeout(()=>{ sl2.style.transition='opacity .25s'; sl2.style.opacity='0'; },180);
+
+          // Kısa bekleme — sonra ANINDA görün + impact
+          setTimeout(()=>{
+            // Tek seferde ortaya çak
+            cardScene.style.transition='none';
+            cardScene.style.opacity='1';
+
+            // Çarpma efektleri
+            sndImpact(); doFlash(); doShake(); spawnGroundGlow();
+            const CX=W/2, CY=H/2;
+            spawnShockwave(CX,CY+225,'rgba(251,146,60,.85)',0);
+            spawnShockwave(CX,CY+225,'rgba(234,88,12,.65)',110);
+            spawnShockwave(CX,CY+225,'rgba(252,211,77,.45)',220);
+            spawnDebris(CX,CY,'rgba(251,146,60,.9)');
+            spawnDebris(CX,CY,'rgba(255,255,255,.7)');
+
+            // Hafif geri tepme — çakılma hissi
+            c3d.style.transition='transform .12s cubic-bezier(0,0,.3,1)';
+            c3d.style.transform='translateY(-12px) scale(1.04)';
+            setTimeout(()=>{
+              c3d.style.transition='transform .5s cubic-bezier(.34,1.56,.64,1)';
+              c3d.style.transform='translateY(0) scale(1)';
+              setTimeout(()=>{
+                document.getElementById('b1').style.width='92%';
+                document.getElementById('b2').style.width='88%';
+                document.getElementById('b3').style.width='60%';
+                document.getElementById('b4').style.width='78%';
+                hud.classList.add('on');
+                cardScene.style.pointerEvents='all';
+                cardScene.style.cursor='pointer';
+                entryDone=true;
+                addInteraction();
+                phase='interactive';
+              },150);
+            },130);
+          },80);
+        }
+      }
+      raf=requestAnimationFrame(flightFrame);
+    },80);
+  },350);
+}
+
+// ── INTERACTION ───────────────────────────────────
+function addInteraction(){
+  cardScene.addEventListener('mousemove', onMove);
+  cardScene.addEventListener('mouseleave', onLeave);
+  cardScene.addEventListener('mouseenter', ()=>hovered=true);
+  cardScene.addEventListener('click', onClick);
+}
+function onMove(e){
+  if(!entryDone||animating) return;
+  hovered=true;
+  const r=cardScene.getBoundingClientRect();
+  const x=(e.clientX-r.left)/r.width, y=(e.clientY-r.top)/r.height;
+  tx=(y-.5)*-22; ty=(x-.5)*22;
+  document.getElementById('holo').style.opacity='1';
+  document.getElementById('holo').style.setProperty('--hx',x*100+'%');
+  document.getElementById('holo').style.setProperty('--hy',y*100+'%');
+  document.getElementById('shine').style.opacity='1';
+  document.getElementById('shine').style.setProperty('--mx',x*100+'%');
+  document.getElementById('shine').style.setProperty('--my',y*100+'%');
+}
+function onLeave(){
+  hovered=false; tx=0; ty=0;
+  document.getElementById('holo').style.opacity='0';
+  document.getElementById('shine').style.opacity='0';
+}
+function onClick(e){
+  if(!entryDone) return;
+  const r=cardScene.getBoundingClientRect();
+  const rip=document.createElement('div'); rip.className='ripple';
+  rip.style.left=(e.clientX-r.left)+'px'; rip.style.top=(e.clientY-r.top)+'px';
+  rip.style.borderColor=flipped?'rgba(234,88,12,.7)':'rgba(251,146,60,.7)';
+  cardScene.appendChild(rip); setTimeout(()=>rip.remove(),700);
+  sndClick(); doFlip();
+}
+
+// ── FLIP — pure JS, no CSS 3D ─────────────────────
+function doFlip(){
+  if(animating) return;
+  animating=true; sndFlip();
+  cx=0; cy=0; tx=0; ty=0;
+  const t0=performance.now(), dur=480;
+  // Phase 1: squeeze to 0 width (scaleX 1→0)
+  // Phase 2: expand from 0 (scaleX 0→1) showing other face
+  let swapped=false;
+  function step(now){
+    const elapsed=now-t0, p=Math.min(elapsed/dur,1);
+    let scaleX, tiltY;
+    if(p<.5){
+      // squeeze in
+      scaleX=1-p*2;
+      tiltY=(p*2)*8; // slight Y tilt during squeeze
+    } else {
+      // expand out
+      if(!swapped){
+        swapped=true;
+        if(!flipped){ cf.style.opacity='0'; cb.style.opacity='1'; }
+        else         { cb.style.opacity='0'; cf.style.opacity='1'; }
+      }
+      scaleX=(p-.5)*2;
+      tiltY=(1-(p-.5)*2)*8;
+    }
+    // Also keep tilt from mouse
+    c3d.style.transform=`rotateX(${cx}deg) rotateY(${tiltY}deg) scaleX(${Math.max(.01,scaleX).toFixed(4)})`;
+    if(p<1){ requestAnimationFrame(step); }
+    else {
+      flipped=!flipped;
+      animating=false;
+      flipbtn.textContent=flipped?'geri dön ↺':'çevir ↻';
+      c3d.style.transform=`rotateX(${cx}deg) rotateY(0deg) scaleX(1)`;
+    }
+  }
+  requestAnimationFrame(step);
+}
+
+// ── TILT LOOP ─────────────────────────────────────
+(function tiltLoop(){
+  cx+=(tx-cx)*.1; cy+=(ty-cy)*.1;
+  if(!animating&&entryDone){
+    c3d.style.transform=`rotateX(${cx}deg) rotateY(${cy}deg)`;
+  }
+  requestAnimationFrame(tiltLoop);
+})();
+
+// ── IDLE SWAY ─────────────────────────────────────
+(function idleSway(){
+  if(!hovered&&!animating&&!flipped&&entryDone){
+    idleT+=.009; tx=Math.sin(idleT*.8)*3.5; ty=Math.sin(idleT)*5;
+  }
+  requestAnimationFrame(idleSway);
+})();
+</script>
+</body>
+</html>
